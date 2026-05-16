@@ -5,10 +5,8 @@ import torch
 import torchvision.models as models
 import torchvision.transforms as transforms
 from PIL import Image
-import numpy as np
 from pytorch_grad_cam import GradCAM
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
-import cv2
 import torch.nn as nn
 from skimage.metrics import structural_similarity as ssim
 from scipy import ndimage

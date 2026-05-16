@@ -15,7 +15,7 @@ def augment_images(image_folder, output_folder, label_file, output_label_file):
         'histogram_eq',
         'clahe',
         'gaussian_blur',
-        'edge_enchancement'
+        'edge_enhancement'
     ]
 
     os.makedirs(OUTPUT_FOLDER, exist_ok=True)

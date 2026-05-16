@@ -106,7 +106,7 @@ class ReduceLROnPlateau:
 
 
 def create_model(num_classes=1):
-    model = models.densenet121(pretrained=True)
+    model = models.densenet121(weights=models.DenseNet121_Weights.DEFAULT)
     
     for param in list(model.parameters())[:-40]:
         param.requires_grad = False
@@ -348,7 +348,7 @@ def train_biomarker_classifier(biomarker_name, biomarker_csv, img_dir,
     
     # Load best model
     print("\nLoading best model...")
-    model.load_state_dict(torch.load(checkpoint_path))
+    model.load_state_dict(torch.load(checkpoint_path, weights_only=True))
     
     # Final evaluation
     print("\nFinal Evaluation:")
@@ -443,7 +443,7 @@ def predict_image(image_path, model_path, biomarker_name, transform=None):
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = create_model(num_classes=1)
-    model.load_state_dict(torch.load(model_path))
+    model.load_state_dict(torch.load(model_path, weights_only=True))
     model = model.to(device)
     model.eval()
     
