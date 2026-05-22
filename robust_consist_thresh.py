@@ -31,6 +31,11 @@ def evaluate_cam_comprehensive(biomarker, image, n_perturbations=5, device='cpu'
     """
     image_path = image
     model_path = f"{biomarker}.pth"
+    import os
+    if not os.path.exists(model_path):
+        model_path = f"{biomarker}_model.pth"
+    if not os.path.exists(model_path):
+        model_path = f"checkpoint_{biomarker}.pth"
     
     # Setup model
     model = models.densenet121(pretrained=False)

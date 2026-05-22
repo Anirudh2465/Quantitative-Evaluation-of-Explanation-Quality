@@ -243,7 +243,10 @@ def train_biomarker_classifier(biomarker_name, biomarker_csv, img_dir,
     # Create model
     print("Creating model...")
     model = create_model(num_classes=1)
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # NOTE: Force CPU — RTX 5070 (sm_120) not yet supported by installed PyTorch.
+    # Restore this once PyTorch is updated:
+    #   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cpu')
     print(f"Using device: {device}")
     model = model.to(device)
     

@@ -1,2 +1,10 @@
-__pycache__
+__pycache__/
 *.pth
+*.csv
+*.xlsx
+biomarker_labels/
+dataset_augmented/
+dataset_preprocessed/
+tcav_train/
+TCAV_outputs/
+TN_2023/
