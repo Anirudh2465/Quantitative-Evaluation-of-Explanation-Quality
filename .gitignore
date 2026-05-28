@@ -1,10 +1,31 @@
+# Python
 __pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Model weights
 *.pth
-*.csv
-*.xlsx
-biomarker_labels/
-dataset_augmented/
-dataset_preprocessed/
-tcav_train/
-TCAV_outputs/
+
+# Data (large image sets & generated labels)
+data/raw/
+data/preprocessed/
+data/augmented/
+data/labels/
+data/tcav_concepts/
+
+# Outputs
+outputs/
+
+# Models & training artefacts
+models/
+
+# Legacy paths (kept for safety during transition)
 TN_2023/
+dataset_preprocessed/
+dataset_augmented/
+tcav_train/
+biomarker_labels/
+sagittal_evaluation_outputs/
+gradcam_outputs/
+TCAV_outputs/

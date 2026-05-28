@@ -30,13 +30,34 @@ def evaluate_cam_comprehensive(biomarker, image, n_perturbations=5, device='cpu'
         tuple: (robustness_score, consistency_score, threshold_score)
     """
     image_path = image
-    model_path = f"{biomarker}.pth"
-    import os
-    if not os.path.exists(model_path):
-        model_path = f"{biomarker}_model.pth"
-    if not os.path.exists(model_path):
-        model_path = f"checkpoint_{biomarker}.pth"
-    
+    import os, sys
+    # Resolve model path: prefer config.model_path() (new structure),
+    # then fall back to legacy root-level names for backward compatibility.
+    _project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if _project_root not in sys.path:
+        sys.path.insert(0, _project_root)
+    try:
+        import config as _cfg
+        model_path = _cfg.model_path(biomarker)
+    except Exception:
+        model_path = None
+
+    if model_path is None or not os.path.exists(model_path):
+        # Legacy fallbacks (root directory)
+        for candidate in [
+            f"{biomarker}_model.pth",
+            f"{biomarker}.pth",
+            f"checkpoint_{biomarker}.pth",
+        ]:
+            if os.path.exists(candidate):
+                model_path = candidate
+                break
+        else:
+            raise FileNotFoundError(
+                f"No model checkpoint found for '{biomarker}'. "
+                f"Expected at: {_cfg.model_path(biomarker)}"
+            )
+
     # Setup model
     model = models.densenet121(pretrained=False)
     num_features = model.classifier.in_features
@@ -48,12 +69,13 @@ def evaluate_cam_comprehensive(biomarker, image, n_perturbations=5, device='cpu'
         nn.Linear(256, 1),
         nn.Sigmoid()
     )
-    
+
     # Load trained weights
     state_dict = torch.load(model_path, map_location=device)
     model.load_state_dict(state_dict)
     model.eval()
     model.to(device)
+
     
     # Define target layer
     target_layer = model.features.denseblock4.denselayer16.conv2

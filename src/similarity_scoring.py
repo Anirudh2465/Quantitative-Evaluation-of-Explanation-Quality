@@ -10,7 +10,10 @@ from PIL import Image
 from pytorch_grad_cam import GradCAM
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from skimage.segmentation import slic
-from skimage.future import graph as rag_module
+try:
+    from skimage.future import graph as rag_module
+except ImportError:
+    from skimage import graph as rag_module
 from skimage import measure
 from scipy.optimize import linear_sum_assignment
 import warnings
@@ -545,9 +548,9 @@ class SuperpixelGraphSimilarityScorer:
         for i, (ref_id, test_id, sim) in enumerate(details['matches'][:10]):
             ref_feat = self.reference_graph['active_features'][ref_id]
             test_feat = test_g['active_features'][test_id]
-            print(f"  Match {i+1}: SP-{ref_id} → SP-{test_id}  "
+            print(f"  Match {i+1}: SP-{ref_id} -> SP-{test_id}  "
                   f"sim={sim:.3f}  "
-                  f"act={ref_feat['mean_activation']:.2f}→{test_feat['mean_activation']:.2f}")
+                  f"act={ref_feat['mean_activation']:.2f}->{test_feat['mean_activation']:.2f}")
 
         if len(details['matches']) > 10:
             print(f"  ... and {len(details['matches']) - 10} more matches")
