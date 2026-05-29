@@ -15,7 +15,13 @@ data/labels/
 data/tcav_concepts/
 
 # Outputs
-outputs/
+outputs/caliper/*.png
+outputs/gradcam
+outputs/neutral/*.png
+outputs/sagital/*.png
+outputs/sagittal
+outputs/tcav
+outputs/zoom/*.png
 
 # Models & training artefacts
 models/
